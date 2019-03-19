@@ -20,15 +20,23 @@ def caesar_cipher_full_decoder():
 def caesar_cipher_translator(abc, cipher, translated_word):
     translated_printout = ""
     letter = 3
-    for letters in cipher.lower():
-        if ord(letters) != 95:
+    for letters in cipher:
+        if 96 <= ord(letters) <= 123:
             ascii_numbers = ord(letters)
             ascii_numbers += int(abc)
             if ascii_numbers >= 123:
                 ascii_numbers -= 26
             translated_word.append(chr(int(ascii_numbers)))
-        else:
+        elif 64 <= ord(letters) <= 91:
+            ascii_numbers = ord(letters)
+            ascii_numbers += int(abc)
+            if ascii_numbers >= 91:
+                ascii_numbers -= 26
+            translated_word.append(chr(int(ascii_numbers)))
+        elif ord(letters) == 95 and ord(letters) == 32:
             translated_word.append(" ")
+        else:
+            translated_word.append(letters)
 
     for translated_converter in translated_word:
         translated_printout += '%s' % translated_converter
@@ -56,14 +64,22 @@ def int_cipher_decoder():
     translated_printout = ""
     abc_itteration = 1
     for letters in cipher:
-        if ord(letters) != 95:
+        if 96 <= ord(letters) <= 123:
             ascii_numbers = ord(letters)
             ascii_numbers += int(abcd[int(abc_itteration)])
             if ascii_numbers >= 123:
                 ascii_numbers -= 26
             translated_word.append(chr(int(ascii_numbers)))
-        else:
+        elif 64 <= ord(letters) <= 91:
+            ascii_numbers = ord(letters)
+            ascii_numbers += int(abcd[int(abc_itteration)])
+            if ascii_numbers >= 91:
+                ascii_numbers -= 26
+            translated_word.append(chr(int(ascii_numbers)))
+        elif ord(letters) == 95 and ord(letters) == 32:
             translated_word.append(" ")
+        else:
+            translated_word.append(letters)
         abc_itteration += 1
 
     for translated_converter in translated_word:
@@ -85,14 +101,22 @@ def neg_int_cipher_decoder():
     translated_printout = ""
     abc_itteration = 1
     for letters in cipher:
-        if ord(letters) != 95:
+        if 96 <= ord(letters) <= 123:
             ascii_numbers = ord(letters)
-            ascii_numbers -= int(abcd[int(abc_itteration)])
-            if ascii_numbers <= 96:
-                ascii_numbers += 26
+            ascii_numbers += int(abcd[int(abc_itteration)])
+            if ascii_numbers >= 123:
+                ascii_numbers -= 26
             translated_word.append(chr(int(ascii_numbers)))
-        else:
+        elif 64 <= ord(letters) <= 91:
+            ascii_numbers = ord(letters)
+            ascii_numbers += int(abcd[int(abc_itteration)])
+            if ascii_numbers >= 91:
+                ascii_numbers -= 26
+            translated_word.append(chr(int(ascii_numbers)))
+        elif ord(letters) == 95 and ord(letters) == 32:
             translated_word.append(" ")
+        else:
+            translated_word.append(letters)
         abc_itteration += 1
 
     for translated_converter in translated_word:
@@ -100,6 +124,55 @@ def neg_int_cipher_decoder():
     print(translated_printout)
 
     translated_word.clear()
+    cipher_decoder()
+
+
+def random_int_cipher_decoder():
+    abc_printout = "The key: "
+    cipher = input("Input your cipher: ")
+    size = input("Do you want to go between: 1-25 or 1-9?")
+    abc_length = input("Input length of key: ")
+    abc = [int(abc_length)]
+    if size == "1-25":
+        while len(abc) < int(abc_length):
+            abc.append(random.randint(1, 25))
+    else:
+        while len(abc) < int(abc_length):
+            abc.append(random.randint(1, 9))
+    translated_word = [str(abc), ": "]
+    for abc_converter in abc:
+        abc_printout += '%s, ' % abc_converter
+    print(abc_printout)
+    if len(abc) <= len(cipher):
+        diff = len(cipher) - len(abc)
+        abc = (abc * int(diff / len(abc)) + 2 * abc)
+    translated_printout = ""
+    abc_itteration = 0
+    for letters in cipher:
+        if 96 <= ord(letters) <= 123:
+            ascii_numbers = ord(letters)
+            ascii_numbers += abc[abc_itteration]
+            if ascii_numbers >= 123:
+                ascii_numbers -= 26
+            translated_word.append(chr(int(ascii_numbers)))
+        elif 64 <= ord(letters) <= 91:
+            ascii_numbers = ord(letters)
+            ascii_numbers += abc[abc_itteration]
+            if ascii_numbers >= 91:
+                ascii_numbers -= 26
+            translated_word.append(chr(int(ascii_numbers)))
+        elif ord(letters) == 95 and ord(letters) == 32:
+            translated_word.append(" ")
+        else:
+            translated_word.append(letters)
+        abc_itteration += 1
+
+    for translated_converter in translated_word:
+        translated_printout += '%s' % translated_converter
+    print(translated_printout)
+
+    translated_word.clear()
+    abc.clear()
     cipher_decoder()
 
 
@@ -128,41 +201,4 @@ def cipher_decoder():
         cipher_decoder()
 
 
-def random_int_cipher_decoder():
-    abc_printout = "The key: "
-    cipher = input("Input your cipher: ")
-    size = input("Do you want to go between: 1-25 or 1-9?")
-    abc_length = input("Input length of key: ")
-    abc = [int(abc_length)]
-    if size == "1-25":
-        while len(abc) < int(abc_length):
-            abc.append(random.randint(1, 25))
-    else:
-        while len(abc) < int(abc_length):
-            abc.append(random.randint(1, 9))
-    translated_word = [str(abc), ": "]
-    for abc_converter in abc:
-        abc_printout += '%s, ' % abc_converter
-    print(abc_printout)
-    if len(abc) <= len(cipher):
-        diff = len(cipher) - len(abc)
-        abc = (abc * int(diff / len(abc)) + 2 * abc)
-    translated_printout = ""
-    abc_itteration = 0
-    for letters in cipher:
-        if ord(letters) != 95:
-            ascii_numbers = ord(letters)
-            ascii_numbers += abc[abc_itteration]
-            if ascii_numbers >= 123:
-                ascii_numbers -= 26
-            translated_word.append(chr(int(ascii_numbers)))
-        else:
-            translated_word.append(" ")
-        abc_itteration += 1
-
-    for translated_converter in translated_word:
-        translated_printout += '%s' % translated_converter
-    print(translated_printout)
-
-
-random_int_cipher_decoder()
+launcher()
